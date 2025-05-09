@@ -1,6 +1,6 @@
 package com.lenaevd.advertisements.mapper;
 
-import com.lenaevd.advertisements.dto.UserDto;
+import com.lenaevd.advertisements.dto.user.UserDto;
 import com.lenaevd.advertisements.model.User;
 import org.mapstruct.Mapper;
 

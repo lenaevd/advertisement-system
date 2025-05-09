@@ -5,12 +5,15 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PostLoad;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,6 +23,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 @Entity
@@ -27,6 +31,7 @@ import java.util.stream.Stream;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class User implements CustomUserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,7 +44,7 @@ public class User implements CustomUserDetails {
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "seller")
+    @OneToMany(mappedBy = "seller", fetch = FetchType.LAZY)
     private List<Grade> grades;
 
     @Transient
@@ -55,32 +60,22 @@ public class User implements CustomUserDetails {
     private List<Advertisement> advertisements;
 
     @OneToMany(mappedBy = "customer")
-    private List<Sale> purchases;
+    private List<Sale> purchasedItems;
 
     @Transient
-    private List<Sale> sales;
-
-    public User(int id, String username, String email, String password, Role role, List<Grade> grades,
-                List<Chat> customerChats, List<Chat> sellerChats, List<Advertisement> advertisements, List<Sale> purchases) {
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-        this.grades = grades;
-        this.rating = calculateRating(grades);
-        this.customerChats = customerChats;
-        this.sellerChats = sellerChats;
-        this.advertisements = advertisements;
-        this.purchases = purchases;
-        this.sales = findSales(advertisements);
-    }
+    private List<Sale> soldItems;
 
     public User(String username, String email, String password, Role role) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.role = role;
+    }
+
+    @PostLoad
+    public void setSalesAndRating() {
+        this.soldItems = findSales(this.advertisements);
+        this.rating = calculateRating(this.grades);
     }
 
     private List<Sale> findSales(List<Advertisement> advertisements) {
@@ -119,6 +114,22 @@ public class User implements CustomUserDetails {
                 ", rating=" + rating +
                 ", advertisements=" + advertisements +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (!(object instanceof User user)) {
+            return false;
+        }
+        return id == user.id && Objects.equals(username, user.username);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username);
     }
 
     @Override

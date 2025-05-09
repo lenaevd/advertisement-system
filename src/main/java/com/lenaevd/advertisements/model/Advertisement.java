@@ -58,19 +58,27 @@ public class Advertisement {
     @OneToOne(mappedBy = "advertisement")
     private Sale sale;
 
+    public Advertisement(String title, String content, int price, User seller, AdvertisementType type) {
+        this.title = title;
+        this.content = content;
+        this.price = price;
+        this.seller = seller;
+        this.type = type;
+        this.status = AdvertisementStatus.ACTIVE;
+        this.publishedAt = LocalDateTime.now();
+    }
+
+    public boolean isPremiumActive() {
+        return this.premiumExpiryDate.isAfter(LocalDateTime.now());
+    }
+
     @Override
     public String toString() {
         return "Advertisement{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", seller=" + seller +
+                ", sellerId=" + seller.getId() +
                 ", status=" + status +
                 '}';
     }
-
-    //    private Sale getSaleIfNotNull() {
-//        if (status == AdvertisementStatus.COMPLETED && sale != null) {
-//            return sale;
-//        }
-//    }
 }

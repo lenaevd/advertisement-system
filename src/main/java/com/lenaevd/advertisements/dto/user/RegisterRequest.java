@@ -1,4 +1,4 @@
-package com.lenaevd.advertisements.dto;
+package com.lenaevd.advertisements.dto.user;
 
 import com.lenaevd.advertisements.model.Role;
 import jakarta.validation.constraints.Email;
@@ -14,6 +14,7 @@ public record RegisterRequest(
         @NotBlank
         String email,
         @NotBlank
+        @Size(min = 8, max = 25)
         String password,
         @NotNull
         Role role) {

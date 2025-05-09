@@ -1,8 +1,8 @@
 package com.lenaevd.advertisements.authentication;
 
-import com.lenaevd.advertisements.dto.LoginRequest;
-import com.lenaevd.advertisements.dto.LoginResponse;
-import com.lenaevd.advertisements.dto.RegisterRequest;
+import com.lenaevd.advertisements.dto.user.LoginRequest;
+import com.lenaevd.advertisements.dto.user.LoginResponse;
+import com.lenaevd.advertisements.dto.user.RegisterRequest;
 import com.lenaevd.advertisements.model.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

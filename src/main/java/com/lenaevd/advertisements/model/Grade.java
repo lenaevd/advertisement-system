@@ -37,13 +37,20 @@ public class Grade {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    public Grade(int number, User seller, User customer) {
+        this.number = number;
+        this.seller = seller;
+        this.customer = customer;
+        this.createdAt = LocalDateTime.now();
+    }
+
     @Override
     public String toString() {
         return "Grade{" +
                 "id=" + id +
                 ", number=" + number +
-                ", seller=" + seller +
-                ", customer=" + customer +
+                ", sellerId=" + seller.getId() +
+                ", customerId=" + customer.getId() +
                 '}';
     }
 }

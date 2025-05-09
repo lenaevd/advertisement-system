@@ -1,4 +1,4 @@
-package com.lenaevd.advertisements.dto;
+package com.lenaevd.advertisements.dto.user;
 
 import jakarta.validation.constraints.NotBlank;
 
