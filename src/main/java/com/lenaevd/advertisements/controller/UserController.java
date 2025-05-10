@@ -63,14 +63,14 @@ public class UserController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<UserDto> getUserById(@PathVariable("id") int id) {
+    public ResponseEntity<UserDto> getUserById(@PathVariable int id) {
         User user = userService.getUserByIdIfExists(id);
         return ResponseEntity.ok(mapper.userToUserDto(user));
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Void> deleteUser(@PathVariable("id") int id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable int id) {
         userService.delete(id);
         return ResponseEntity.status(HttpStatus.OK).build();
     }

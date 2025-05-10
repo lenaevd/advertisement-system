@@ -6,6 +6,7 @@ import com.lenaevd.advertisements.dto.grade.LeaveGradeRequest;
 import com.lenaevd.advertisements.mapper.GradeMapper;
 import com.lenaevd.advertisements.model.Grade;
 import com.lenaevd.advertisements.service.GradeService;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.Principal;
 import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping("/grades")
 public class GradeController {
@@ -43,7 +46,7 @@ public class GradeController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
-    public ResponseEntity<List<GradeDto>> getGradesByUserId(@RequestParam int userId) {
+    public ResponseEntity<List<GradeDto>> getGradesByUserId(@RequestParam @NotNull Integer userId) {
         List<Grade> grades = gradeService.getUsersGrades(userId);
         return ResponseEntity.ok(gradeMapper.gradesToGradeDtos(grades));
     }
@@ -62,9 +65,9 @@ public class GradeController {
         return ResponseEntity.ok(gradeMapper.gradesToGradeDtos(grades));
     }
 
-    @DeleteMapping()
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Void> deleteGrade(@RequestParam int id) {
+    public ResponseEntity<Void> deleteGrade(@PathVariable int id) {
         gradeService.deleteGrade(id);
         return ResponseEntity.status(HttpStatus.OK).build();
     }

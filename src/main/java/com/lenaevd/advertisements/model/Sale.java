@@ -27,7 +27,7 @@ public class Sale {
     @Column(name = "sale_id")
     private int id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "advertisement_id")
     private Advertisement advertisement;
 

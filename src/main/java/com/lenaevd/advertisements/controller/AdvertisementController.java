@@ -40,19 +40,19 @@ public class AdvertisementController {
         this.mapper = mapper;
     }
 
-    @GetMapping("/all")
+    @GetMapping()
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<AdvertisementDto>> getAllAds() {
         return ResponseEntity.ok(mapper.adsToAdDtos(adService.getAll()));
     }
 
-    @GetMapping()
+    @GetMapping("/feed")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     public ResponseEntity<List<AdvertisementDto>> getFeed() {
         return ResponseEntity.ok(mapper.adsToAdDtos(adService.getAdvertisementsFeed()));
     }
 
-    @GetMapping("/filtered")
+    @PostMapping("/filtered")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     public ResponseEntity<List<AdvertisementDto>> getAdsByType(@RequestBody @Validated FilterAdByTypeRequest request) {
         List<Advertisement> ads = adService.getAdvertisementsByTypesAndStatus(request.types(), AdvertisementStatus.ACTIVE);
@@ -68,17 +68,16 @@ public class AdvertisementController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
-    public ResponseEntity<AdvertisementDto> getAdvertisementById(@PathVariable @NotNull int id) {
+    public ResponseEntity<AdvertisementDto> getAdvertisementById(@PathVariable int id) {
         return ResponseEntity.ok(mapper.adToAdDto(adService.getAdvertisementById(id)));
     }
 
     @GetMapping("/personal")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
-    public ResponseEntity<List<AdvertisementDto>> getAdvertisementsBySellerId(@RequestParam @NotNull int userId,
+    public ResponseEntity<List<AdvertisementDto>> getAdvertisementsBySellerId(@RequestParam @NotNull Integer userId,
                                                                               Principal principal) {
         return ResponseEntity.ok(mapper.adsToAdDtos(adService.getAdvertisementBySellerId(userId, principal)));
     }
-
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
@@ -88,9 +87,9 @@ public class AdvertisementController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Void> deleteAdvertisement(@RequestParam @NotNull int id) {
+    public ResponseEntity<Void> deleteAdvertisement(@PathVariable int id) {
         adService.deleteAdvertisement(id);
         return ResponseEntity.ok().build();
     }
@@ -104,14 +103,14 @@ public class AdvertisementController {
 
     @PatchMapping("/unarchive")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
-    public ResponseEntity<Void> unarchiveAdvertisement(@RequestParam @NotNull int id, Principal principal) {
+    public ResponseEntity<Void> unarchiveAdvertisement(@RequestParam @NotNull Integer id, Principal principal) {
         adService.unarchiveAdvertisement(id, principal);
         return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/complete")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
-    public ResponseEntity<Void> completeAdvertisement(@RequestParam @NotNull int id, @RequestParam @NotNull int customerId,
+    public ResponseEntity<Void> completeAdvertisement(@RequestParam @NotNull Integer id, @RequestParam @NotNull Integer customerId,
                                                       Principal principal) {
         adService.completeAdvertisement(id, principal, customerId);
         return ResponseEntity.ok().build();
