@@ -38,12 +38,19 @@ public class Comment {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    public Comment(Advertisement advertisement, User author, String content) {
+        this.advertisement = advertisement;
+        this.author = author;
+        this.content = content;
+        this.createdAt = LocalDateTime.now();
+    }
+
     @Override
     public String toString() {
         return "Comment{" +
                 "id=" + id +
                 ", advertisementId=" + advertisement.getId() +
-                ", author=" + author +
+                ", authorId=" + author.getId() +
                 ", content='" + content + '\'' +
                 ", createdAt=" + createdAt +
                 '}';

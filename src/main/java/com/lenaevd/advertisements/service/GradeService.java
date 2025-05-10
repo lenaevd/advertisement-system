@@ -87,9 +87,7 @@ public class GradeService {
     }
 
     public List<Grade> getUsersGrades(int userId) {
-        if (userService.getById(userId).isEmpty()) {
-            throw new ObjectNotFoundException(userId, EntityName.USER);
-        }
+        userService.getUserByIdIfExists(userId);
         return gradeDao.findBySellerId(userId);
     }
 }

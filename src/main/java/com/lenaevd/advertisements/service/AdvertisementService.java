@@ -50,7 +50,7 @@ public class AdvertisementService {
         return ads;
     }
 
-    public Advertisement getAdvertisementById(int id) {
+    public Advertisement getAdvertisementByIdOrElseThrow(int id) {
         return advertisementDao.findById(id).orElseThrow(() -> new ObjectNotFoundException(id, EntityName.ADVERTISEMENT));
     }
 

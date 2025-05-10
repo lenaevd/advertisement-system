@@ -69,7 +69,7 @@ public class AdvertisementController {
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     public ResponseEntity<AdvertisementDto> getAdvertisementById(@PathVariable int id) {
-        return ResponseEntity.ok(mapper.adToAdDto(adService.getAdvertisementById(id)));
+        return ResponseEntity.ok(mapper.adToAdDto(adService.getAdvertisementByIdOrElseThrow(id)));
     }
 
     @GetMapping("/personal")
