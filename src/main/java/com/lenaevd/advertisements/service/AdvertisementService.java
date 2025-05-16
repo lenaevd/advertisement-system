@@ -14,6 +14,7 @@ import com.lenaevd.advertisements.model.AdvertisementType;
 import com.lenaevd.advertisements.model.EntityName;
 import com.lenaevd.advertisements.model.Sale;
 import com.lenaevd.advertisements.model.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,21 +24,18 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class AdvertisementService {
     private final AdvertisementDao advertisementDao;
     private final UserService userService;
     private final SaleDao saleDao;
 
-    public AdvertisementService(AdvertisementDao advertisementDao, UserService userService, SaleDao saleDao) {
-        this.advertisementDao = advertisementDao;
-        this.userService = userService;
-        this.saleDao = saleDao;
-    }
-
+    @Transactional(readOnly = true)
     public List<Advertisement> getAll() {
         return advertisementDao.findAll();
     }
 
+    @Transactional(readOnly = true)
     public List<Advertisement> getAdvertisementsFeed() {
         List<Advertisement> ads = advertisementDao.findAdsByStatus(AdvertisementStatus.ACTIVE);
 
@@ -50,6 +48,7 @@ public class AdvertisementService {
         return ads;
     }
 
+    @Transactional(readOnly = true)
     public Advertisement getAdvertisementByIdOrElseThrow(int id) {
         return advertisementDao.findById(id).orElseThrow(() -> new ObjectNotFoundException(id, EntityName.ADVERTISEMENT));
     }
@@ -159,6 +158,7 @@ public class AdvertisementService {
         }
     }
 
+    @Transactional(readOnly = true)
     public List<Advertisement> getAdvertisementBySellerId(int sellerId, Principal principal) {
         User adsAuthor = userService.getUserByIdIfExists(sellerId);
         User requester = userService.getUserFromPrincipal(principal);
@@ -170,10 +170,12 @@ public class AdvertisementService {
         }
     }
 
+    @Transactional(readOnly = true)
     public List<Advertisement> getAdvertisementsByTypesAndStatus(List<AdvertisementType> types, AdvertisementStatus status) {
         return advertisementDao.findAdsByTypesAndStatus(types, status);
     }
 
+    @Transactional(readOnly = true)
     public List<Advertisement> searchAdvertisementsByKeywordAndStatus(String keyword, AdvertisementStatus status) {
         return advertisementDao.findAdsByKeywordInTitle(keyword, status);
     }

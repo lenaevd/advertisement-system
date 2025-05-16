@@ -40,7 +40,7 @@ public abstract class Dao<T> {
 
     public Optional<T> findById(int id) {
         try {
-            Session session = sessionFactory.openSession();
+            Session session = sessionFactory.getCurrentSession();
             T object = session.find(getEntityClass(), id);
             return Optional.ofNullable(object);
         } catch (Exception e) {
@@ -51,7 +51,7 @@ public abstract class Dao<T> {
 
     public List<T> findAll() {
         try {
-            Session session = sessionFactory.openSession();
+            Session session = sessionFactory.getCurrentSession();
             return session.createQuery(getFindAllQuery(), getEntityClass()).getResultList();
         } catch (Exception e) {
             logger.error(LoggerMessages.DAO_ERROR, e.getMessage());

@@ -36,10 +36,9 @@ public class CommentDao extends Dao<Comment> {
     }
 
     public List<Comment> findByAdvertisementId(int adId) {
-        try (Session session = sessionFactory.openSession()) {
-            return session.createQuery(FIND_BY_AD_ID_QUERY, getEntityClass())
-                    .setParameter("adId", adId)
-                    .getResultList();
-        }
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery(FIND_BY_AD_ID_QUERY, getEntityClass())
+                .setParameter("adId", adId)
+                .getResultList();
     }
 }

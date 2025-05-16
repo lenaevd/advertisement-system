@@ -4,6 +4,7 @@ import com.lenaevd.advertisements.dao.UserDao;
 import com.lenaevd.advertisements.exception.UserAlreadyExistsException;
 import com.lenaevd.advertisements.exception.WrongCredentialsException;
 import com.lenaevd.advertisements.model.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,18 +13,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class AuthenticationService {
     private final UserDao userDao;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtTokenService;
-
-    public AuthenticationService(UserDao userDao, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtService jwtService) {
-        this.userDao = userDao;
-        this.passwordEncoder = passwordEncoder;
-        this.authenticationManager = authenticationManager;
-        this.jwtTokenService = jwtService;
-    }
 
     @Transactional
     public void register(User user) {
@@ -37,6 +32,7 @@ public class AuthenticationService {
         }
     }
 
+    @Transactional(readOnly = true)
     public String authenticate(String username, String password) {
         User user = userDao.findByUsername(username).orElseThrow(() -> new WrongCredentialsException("Wrong username"));
         try {

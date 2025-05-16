@@ -5,6 +5,7 @@ import com.lenaevd.advertisements.dao.UserDao;
 import com.lenaevd.advertisements.exception.ObjectNotFoundException;
 import com.lenaevd.advertisements.model.EntityName;
 import com.lenaevd.advertisements.model.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,24 +17,22 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserService implements UserDetailsService {
     private final UserDao userDao;
     private final PasswordEncoder passwordEncoder;
-
-    public UserService(UserDao userDao, PasswordEncoder passwordEncoder) {
-        this.userDao = userDao;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @Transactional
     public void save(User object) {
         userDao.save(object);
     }
 
+    @Transactional(readOnly = true)
     public Optional<User> getById(int id) {
         return userDao.findById(id);
     }
 
+    @Transactional(readOnly = true)
     public List<User> getAll() {
         return userDao.findAll();
     }
@@ -44,16 +43,19 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public CustomUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> userOptional = userDao.findByUsername(username);
         return userOptional.orElseThrow(() -> new UsernameNotFoundException("There is no user with name = " + username));
     }
 
+    @Transactional(readOnly = true)
     public User getUserFromPrincipal(Principal principal) {
         Optional<User> userOptional = userDao.findByUsername(principal.getName());
         return userOptional.orElseThrow(() -> new UsernameNotFoundException("There is no user with name = " + principal.getName()));
     }
 
+    @Transactional(readOnly = true)
     public User getUserByIdIfExists(int id) {
         return userDao.findById(id).orElseThrow(() -> new ObjectNotFoundException(id, EntityName.USER));
     }

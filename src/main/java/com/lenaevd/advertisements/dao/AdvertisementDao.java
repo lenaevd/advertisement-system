@@ -46,45 +46,40 @@ public class AdvertisementDao extends Dao<Advertisement> {
     }
 
     public List<Advertisement> findAllAdsBySellerId(int sellerId) {
-        try (Session session = sessionFactory.openSession()) {
-            return session.createQuery(FIND_ADS_BY_SELLER_ID_QUERY, getEntityClass())
-                    .setParameter("sellerId", sellerId)
-                    .getResultList();
-        }
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery(FIND_ADS_BY_SELLER_ID_QUERY, getEntityClass())
+                .setParameter("sellerId", sellerId)
+                .getResultList();
     }
 
     public List<Advertisement> findAdsBySellerIdAndStatus(int sellerId, AdvertisementStatus status) {
-        try (Session session = sessionFactory.openSession()) {
-            return session.createQuery(FIND_ADS_BY_SELLER_ID_AND_STATUS_QUERY, getEntityClass())
-                    .setParameter("sellerId", sellerId)
-                    .setParameter("status", status)
-                    .getResultList();
-        }
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery(FIND_ADS_BY_SELLER_ID_AND_STATUS_QUERY, getEntityClass())
+                .setParameter("sellerId", sellerId)
+                .setParameter("status", status)
+                .getResultList();
     }
 
     public List<Advertisement> findAdsByTypesAndStatus(List<AdvertisementType> types, AdvertisementStatus status) {
-        try (Session session = sessionFactory.openSession()) {
-            return session.createQuery(FIND_ADS_BY_TYPES_AND_STATUS_QUERY, getEntityClass())
-                    .setParameter("types", types)
-                    .setParameter("status", status)
-                    .getResultList();
-        }
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery(FIND_ADS_BY_TYPES_AND_STATUS_QUERY, getEntityClass())
+                .setParameter("types", types)
+                .setParameter("status", status)
+                .getResultList();
     }
 
     public List<Advertisement> findAdsByStatus(AdvertisementStatus status) {
-        try (Session session = sessionFactory.openSession()) {
-            return session.createQuery(FIND_ADS_BY_STATUS_QUERY, getEntityClass())
-                    .setParameter("status", status)
-                    .getResultList();
-        }
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery(FIND_ADS_BY_STATUS_QUERY, getEntityClass())
+                .setParameter("status", status)
+                .getResultList();
     }
 
     public List<Advertisement> findAdsByKeywordInTitle(String keyword, AdvertisementStatus status) {
-        try (Session session = sessionFactory.openSession()) {
-            Query<Advertisement> query = session.createQuery(FIND_BY_KEYWORD_IN_TITLE_QUERY, getEntityClass());
-            query.setParameter("keyword", "%" + keyword.toLowerCase() + "%");
-            query.setParameter("status", status);
-            return query.getResultList();
-        }
+        Session session = sessionFactory.getCurrentSession();
+        Query<Advertisement> query = session.createQuery(FIND_BY_KEYWORD_IN_TITLE_QUERY, getEntityClass());
+        query.setParameter("keyword", "%" + keyword.toLowerCase() + "%");
+        query.setParameter("status", status);
+        return query.getResultList();
     }
 }

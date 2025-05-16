@@ -41,6 +41,14 @@ public class Message {
     @Column(name = "is_read")
     private boolean isRead;
 
+    public Message(Chat chat, User sender, String content) {
+        this.chat = chat;
+        this.sender = sender;
+        this.content = content;
+        this.sentAt = LocalDateTime.now();
+        this.isRead = false;
+    }
+
     @Override
     public String toString() {
         return "Message{" +

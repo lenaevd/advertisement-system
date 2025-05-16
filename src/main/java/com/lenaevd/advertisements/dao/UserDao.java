@@ -38,20 +38,18 @@ public class UserDao extends Dao<User> {
     }
 
     public Optional<User> findByUsername(String username) {
-        try (Session session = sessionFactory.openSession()) {
-            Query<User> query = session.createQuery(FIND_USER_BY_NAME_QUERY, getEntityClass());
-            query.setParameter("username", username);
-            query.setMaxResults(1);
-            return Optional.ofNullable(query.uniqueResult());
-        }
+        Session session = sessionFactory.getCurrentSession();
+        Query<User> query = session.createQuery(FIND_USER_BY_NAME_QUERY, getEntityClass());
+        query.setParameter("username", username);
+        query.setMaxResults(1);
+        return Optional.ofNullable(query.uniqueResult());
     }
 
     public Optional<User> findByEmail(String email) {
-        try (Session session = sessionFactory.openSession()) {
-            Query<User> query = session.createQuery(FIND_USER_BY_EMAIL_QUERY, getEntityClass());
-            query.setParameter("email", email);
-            query.setMaxResults(1);
-            return Optional.ofNullable(query.uniqueResult());
-        }
+        Session session = sessionFactory.getCurrentSession();
+        Query<User> query = session.createQuery(FIND_USER_BY_EMAIL_QUERY, getEntityClass());
+        query.setParameter("email", email);
+        query.setMaxResults(1);
+        return Optional.ofNullable(query.uniqueResult());
     }
 }

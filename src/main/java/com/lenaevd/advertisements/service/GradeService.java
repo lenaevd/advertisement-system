@@ -9,6 +9,7 @@ import com.lenaevd.advertisements.model.EntityName;
 import com.lenaevd.advertisements.model.Grade;
 import com.lenaevd.advertisements.model.Sale;
 import com.lenaevd.advertisements.model.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,16 +19,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class GradeService {
     private static final String GRADE_CREATION_RESTRICTED = "User don't have any relatable purchases to leave grade";
     private static final String GRADE_CHANGE_RESTRICTED = "Grade doesn't belong to user";
     private final GradeDao gradeDao;
     private final UserService userService;
-
-    public GradeService(GradeDao gradeDao, UserService userService) {
-        this.gradeDao = gradeDao;
-        this.userService = userService;
-    }
 
     @Transactional
     public void createGrade(Principal principal, LeaveGradeRequest request) {
@@ -82,10 +79,12 @@ public class GradeService {
         gradeDao.deleteById(id);
     }
 
+    @Transactional(readOnly = true)
     public List<Grade> getAllGrades() {
         return gradeDao.findAll();
     }
 
+    @Transactional(readOnly = true)
     public List<Grade> getUsersGrades(int userId) {
         userService.getUserByIdIfExists(userId);
         return gradeDao.findBySellerId(userId);

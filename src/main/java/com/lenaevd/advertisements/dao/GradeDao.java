@@ -40,20 +40,18 @@ public class GradeDao extends Dao<Grade> {
     }
 
     public Optional<Grade> findByUsers(int sellerId, int customerId) {
-        try (Session session = sessionFactory.openSession()) {
-            Query<Grade> query = session.createQuery(FIND_GRADE_BY_USERS_QUERY, getEntityClass());
-            query.setParameter("sellerId", sellerId);
-            query.setParameter("customerId", customerId);
-            query.setMaxResults(1);
-            return Optional.ofNullable(query.uniqueResult());
-        }
+        Session session = sessionFactory.getCurrentSession();
+        Query<Grade> query = session.createQuery(FIND_GRADE_BY_USERS_QUERY, getEntityClass());
+        query.setParameter("sellerId", sellerId);
+        query.setParameter("customerId", customerId);
+        query.setMaxResults(1);
+        return Optional.ofNullable(query.uniqueResult());
     }
 
     public List<Grade> findBySellerId(int sellerId) {
-        try (Session session = sessionFactory.openSession()) {
-            return session.createQuery(FIND_GRADES_BY_SELLER_ID_QUERY, getEntityClass())
-                    .setParameter("sellerId", sellerId)
-                    .getResultList();
-        }
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery(FIND_GRADES_BY_SELLER_ID_QUERY, getEntityClass())
+                .setParameter("sellerId", sellerId)
+                .getResultList();
     }
 }

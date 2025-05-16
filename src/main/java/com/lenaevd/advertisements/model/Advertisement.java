@@ -69,6 +69,9 @@ public class Advertisement {
     }
 
     public boolean isPremiumActive() {
+        if (premiumExpiryDate == null) {
+            return false;
+        }
         return this.premiumExpiryDate.isAfter(LocalDateTime.now());
     }
 

@@ -37,18 +37,16 @@ public class SaleDao extends Dao<Sale> {
     }
 
     public List<Sale> findSoldItems(int sellerId) {
-        try (Session session = sessionFactory.openSession()) {
-            return session.createQuery(FIND_SOLD_ITEMS_QUERY, getEntityClass())
-                    .setParameter("sellerId", sellerId)
-                    .getResultList();
-        }
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery(FIND_SOLD_ITEMS_QUERY, getEntityClass())
+                .setParameter("sellerId", sellerId)
+                .getResultList();
     }
 
     public List<Sale> findPurchasedItems(int customerId) {
-        try (Session session = sessionFactory.openSession()) {
-            return session.createQuery(FIND_PURCHASED_ITEMS_QUERY, getEntityClass())
-                    .setParameter("customerId", customerId)
-                    .getResultList();
-        }
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery(FIND_PURCHASED_ITEMS_QUERY, getEntityClass())
+                .setParameter("customerId", customerId)
+                .getResultList();
     }
 }
