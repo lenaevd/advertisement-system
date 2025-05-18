@@ -4,6 +4,7 @@ import com.lenaevd.advertisements.dto.user.LoginRequest;
 import com.lenaevd.advertisements.dto.user.LoginResponse;
 import com.lenaevd.advertisements.dto.user.RegisterRequest;
 import com.lenaevd.advertisements.model.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -12,13 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequiredArgsConstructor
 public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
-
-    public AuthenticationController(AuthenticationService authenticationService) {
-        this.authenticationService = authenticationService;
-    }
 
     @PostMapping("/register")
     public ResponseEntity<Void> register(@RequestBody @Validated RegisterRequest request) {

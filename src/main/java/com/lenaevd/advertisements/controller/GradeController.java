@@ -7,6 +7,7 @@ import com.lenaevd.advertisements.mapper.GradeMapper;
 import com.lenaevd.advertisements.model.Grade;
 import com.lenaevd.advertisements.service.GradeService;
 import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,15 +28,11 @@ import java.util.List;
 @Validated
 @RestController
 @RequestMapping("/grades")
+@RequiredArgsConstructor
 public class GradeController {
 
     private final GradeService gradeService;
     private final GradeMapper gradeMapper;
-
-    public GradeController(GradeService service, GradeMapper gradeMapper) {
-        this.gradeService = service;
-        this.gradeMapper = gradeMapper;
-    }
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")

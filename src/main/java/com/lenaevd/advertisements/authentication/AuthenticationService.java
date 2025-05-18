@@ -1,6 +1,6 @@
 package com.lenaevd.advertisements.authentication;
 
-import com.lenaevd.advertisements.dao.UserDao;
+import com.lenaevd.advertisements.dao.impl.UserDaoImpl;
 import com.lenaevd.advertisements.exception.UserAlreadyExistsException;
 import com.lenaevd.advertisements.exception.WrongCredentialsException;
 import com.lenaevd.advertisements.model.User;
@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
-    private final UserDao userDao;
+    private final UserDaoImpl userDao;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtTokenService;

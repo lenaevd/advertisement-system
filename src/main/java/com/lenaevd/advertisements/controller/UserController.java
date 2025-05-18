@@ -7,6 +7,7 @@ import com.lenaevd.advertisements.dto.user.UserDto;
 import com.lenaevd.advertisements.mapper.UserMapper;
 import com.lenaevd.advertisements.model.User;
 import com.lenaevd.advertisements.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,14 +25,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
+@RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
     private final UserMapper mapper;
-
-    public UserController(UserService userService, UserMapper mapper) {
-        this.userService = userService;
-        this.mapper = mapper;
-    }
 
     @PatchMapping("/username")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
@@ -64,7 +61,7 @@ public class UserController {
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<UserDto> getUserById(@PathVariable int id) {
-        User user = userService.getUserByIdIfExists(id);
+        User user = userService.getUserById(id);
         return ResponseEntity.ok(mapper.userToUserDto(user));
     }
 

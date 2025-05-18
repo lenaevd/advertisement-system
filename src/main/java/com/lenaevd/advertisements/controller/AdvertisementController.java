@@ -11,6 +11,7 @@ import com.lenaevd.advertisements.model.AdvertisementStatus;
 import com.lenaevd.advertisements.service.AdvertisementService;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,14 +32,10 @@ import java.util.List;
 @Validated
 @RestController
 @RequestMapping("/ads")
+@RequiredArgsConstructor
 public class AdvertisementController {
     private final AdvertisementService adService;
     private final AdvertisementMapper mapper;
-
-    public AdvertisementController(AdvertisementService adService, AdvertisementMapper mapper) {
-        this.adService = adService;
-        this.mapper = mapper;
-    }
 
     @GetMapping()
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -54,7 +51,7 @@ public class AdvertisementController {
 
     @PostMapping("/filtered")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
-    public ResponseEntity<List<AdvertisementDto>> getAdsByType(@RequestBody @Validated FilterAdByTypeRequest request) {
+    public ResponseEntity<List<AdvertisementDto>> getAdsByTypes(@RequestBody @Validated FilterAdByTypeRequest request) {
         List<Advertisement> ads = adService.getAdvertisementsByTypesAndStatus(request.types(), AdvertisementStatus.ACTIVE);
         return ResponseEntity.ok(mapper.adsToAdDtos(ads));
     }
@@ -69,7 +66,7 @@ public class AdvertisementController {
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     public ResponseEntity<AdvertisementDto> getAdvertisementById(@PathVariable int id) {
-        return ResponseEntity.ok(mapper.adToAdDto(adService.getAdvertisementByIdOrElseThrow(id)));
+        return ResponseEntity.ok(mapper.adToAdDto(adService.getAdvertisementById(id)));
     }
 
     @GetMapping("/personal")

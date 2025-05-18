@@ -6,6 +6,7 @@ import com.lenaevd.advertisements.dto.comment.LeaveCommentRequest;
 import com.lenaevd.advertisements.mapper.CommentMapper;
 import com.lenaevd.advertisements.service.CommentService;
 import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,14 +27,10 @@ import java.util.List;
 @Validated
 @RestController
 @RequestMapping("/comments")
+@RequiredArgsConstructor
 public class CommentController {
     private final CommentService commentService;
     private final CommentMapper mapper;
-
-    public CommentController(CommentService commentService, CommentMapper mapper) {
-        this.commentService = commentService;
-        this.mapper = mapper;
-    }
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
