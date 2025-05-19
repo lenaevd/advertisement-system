@@ -1,8 +1,6 @@
 package com.lenaevd.advertisements.controller;
 
-import com.lenaevd.advertisements.dto.user.ChangeEmailRequest;
-import com.lenaevd.advertisements.dto.user.ChangePasswordRequest;
-import com.lenaevd.advertisements.dto.user.ChangeUsernameRequest;
+import com.lenaevd.advertisements.dto.user.ChangeUserRequest;
 import com.lenaevd.advertisements.dto.user.UserDto;
 import com.lenaevd.advertisements.mapper.UserMapper;
 import com.lenaevd.advertisements.model.User;
@@ -30,24 +28,10 @@ public class UserController {
     private final UserService userService;
     private final UserMapper mapper;
 
-    @PatchMapping("/username")
+    @PatchMapping()
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
-    public ResponseEntity<Void> changeUsername(@RequestBody @Validated ChangeUsernameRequest request, Principal principal) {
-        userService.changeUsername(principal, request.newUsername());
-        return ResponseEntity.status(HttpStatus.OK).build();
-    }
-
-    @PatchMapping("/email")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
-    public ResponseEntity<Void> changeEmail(@RequestBody @Validated ChangeEmailRequest request, Principal principal) {
-        userService.changeEmail(principal, request.newEmail());
-        return ResponseEntity.status(HttpStatus.OK).build();
-    }
-
-    @PatchMapping("/password")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
-    public ResponseEntity<Void> changePassword(@RequestBody @Validated ChangePasswordRequest request, Principal principal) {
-        userService.changePassword(principal, request.newPassword());
+    public ResponseEntity<Void> changeUserInfo(@RequestBody @Validated ChangeUserRequest request, Principal principal) {
+        userService.changeUserInfo(principal, request);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 

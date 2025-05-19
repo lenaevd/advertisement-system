@@ -73,7 +73,7 @@ public class AdvertisementController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
     public ResponseEntity<List<AdvertisementDto>> getAdvertisementsBySellerId(@RequestParam @NotNull Integer userId,
                                                                               Principal principal) {
-        return ResponseEntity.ok(mapper.adsToAdDtos(adService.getAdvertisementBySellerId(userId, principal)));
+        return ResponseEntity.ok(mapper.adsToAdDtos(adService.getAdvertisementsBySellerId(userId, principal)));
     }
 
     @PostMapping

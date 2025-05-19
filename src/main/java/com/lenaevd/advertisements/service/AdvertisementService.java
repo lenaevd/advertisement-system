@@ -31,7 +31,7 @@ public interface AdvertisementService {
 
     void makeAdvertisementPremium(PremiumRequest request, Principal principal);
 
-    List<Advertisement> getAdvertisementBySellerId(int sellerId, Principal principal);
+    List<Advertisement> getAdvertisementsBySellerId(int sellerId, Principal principal);
 
     List<Advertisement> getAll();
 
