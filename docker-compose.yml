@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+  advertisementsDB:
+    image: "postgres"
+    environment:
+      POSTGRES_DB: advertisements
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+    volumes:
+      - ./scripts:/docker-entrypoint-initdb.d
+    ports:
+      - "6432:5432"
+    networks:
+      - app-network
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://advertisementsDB:5432/advertisements
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=password
+    ports:
+      - "8080:8080"
+    depends_on:
+      - advertisementsDB
+    volumes:
+      - ./logs:/logs
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
