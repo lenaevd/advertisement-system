@@ -23,7 +23,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserDao userDao;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
-    private final JwtService jwtTokenService;
+    private final JwtService jwtService;
 
     @Override
     @Transactional
@@ -50,6 +50,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new WrongCredentialsException("Wrong password");
         }
         LOGGER.info("User {} authenticated", user.getUsername());
-        return jwtTokenService.generateToken(user);
+        return jwtService.generateToken(user);
     }
 }

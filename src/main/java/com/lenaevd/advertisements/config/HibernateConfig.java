@@ -1,5 +1,7 @@
 package com.lenaevd.advertisements.config;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +15,14 @@ import java.util.Properties;
 
 @Configuration
 public class HibernateConfig {
+    @Value("${hibernate.dialect}")
+    private String hibernateDialect;
+
+    @Value("${hibernate.show_sql}")
+    private String hibernateShowSql;
+
+    @Value("${hibernate.format_sql}")
+    private String hibernateFormatSql;
 
     @Bean
     @ConfigurationProperties("app.datasource")
@@ -21,19 +31,21 @@ public class HibernateConfig {
     }
 
     @Bean
-    public LocalSessionFactoryBean sessionFactory(DataSource dataSource) {
+    public LocalSessionFactoryBean sessionFactory(DataSource dataSource, @Qualifier("hibernateProperties") Properties properties) {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource);
         sessionFactory.setPackagesToScan("com.lenaevd.advertisements.model");
-        sessionFactory.setHibernateProperties(hibernateProperties());
+        sessionFactory.setHibernateProperties(properties);
         return sessionFactory;
     }
 
-    private Properties hibernateProperties() {
+    @Bean
+    @ConfigurationProperties("hibernate")
+    public Properties hibernateProperties() {
         Properties properties = new Properties();
-        properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
-        properties.put("hibernate.show_sql", "true");
-        properties.put("hibernate.format_sql", "true");
+        properties.put("hibernate.dialect", hibernateDialect);
+        properties.put("hibernate.show_sql", hibernateShowSql);
+        properties.put("hibernate.format_sql", hibernateFormatSql);
         return properties;
     }
 

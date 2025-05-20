@@ -36,9 +36,6 @@ public class ChatServiceImpl implements ChatService {
         chats.sort((chat1, chat2) -> {
             Message m1 = chat1.getLastMessage();
             Message m2 = chat2.getLastMessage();
-            if (m1.isRead() != m2.isRead()) {
-                return Boolean.compare(m2.isRead(), m1.isRead());
-            }
             return m2.getSentAt().compareTo(m1.getSentAt());
         });
         LOGGER.info("Returned {} chats for user {}", chats.size(), user.getUsername());
