@@ -110,7 +110,7 @@ public class MessageServiceImpl implements MessageService {
             messageDao.update(message);
             LOGGER.info("Message with id={} is read", message.getId());
         } else {
-            throw new NoRightsException(USER_IS_NOT_THE_AUTHOR);
+            throw new NoRightsException("This message can't be read by user");
         }
     }
 

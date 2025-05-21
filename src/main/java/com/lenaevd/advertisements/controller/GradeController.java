@@ -3,6 +3,7 @@ package com.lenaevd.advertisements.controller;
 import com.lenaevd.advertisements.dto.grade.ChangeGradeRequest;
 import com.lenaevd.advertisements.dto.grade.GradeDto;
 import com.lenaevd.advertisements.dto.grade.LeaveGradeRequest;
+import com.lenaevd.advertisements.dto.grade.RatingResponse;
 import com.lenaevd.advertisements.mapper.GradeMapper;
 import com.lenaevd.advertisements.model.Grade;
 import com.lenaevd.advertisements.service.GradeService;
@@ -46,6 +47,13 @@ public class GradeController {
     public ResponseEntity<List<GradeDto>> getGradesByUserId(@RequestParam @NotNull Integer userId) {
         List<Grade> grades = gradeService.getUsersGrades(userId);
         return ResponseEntity.ok(gradeMapper.gradesToGradeDtos(grades));
+    }
+
+    @GetMapping("/rating")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
+    public ResponseEntity<RatingResponse> getRatingByUserId(@RequestParam @NotNull Integer userId) {
+        float rating = gradeService.getUsersRating(userId);
+        return ResponseEntity.ok(new RatingResponse(userId, rating));
     }
 
     @PatchMapping

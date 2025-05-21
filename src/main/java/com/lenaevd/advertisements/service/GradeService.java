@@ -14,6 +14,8 @@ public interface GradeService {
 
     List<Grade> getUsersGrades(int userId);
 
+    float getUsersRating(Integer userId);
+
     List<Grade> getAllGrades();
 
     Grade getById(int id);

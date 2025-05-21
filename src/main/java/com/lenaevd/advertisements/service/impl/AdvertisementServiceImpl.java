@@ -131,7 +131,9 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         LOGGER.debug(LoggerMessages.EXECUTING_FOR_OBJECT, "completeAdvertisement", EntityName.ADVERTISEMENT, id);
         Advertisement ad = getAdIfExistsAndUserIsAuthor(id, sellerPrincipal);
         User customer = userService.getUserById(customerId);
-
+        if (ad.getSeller().equals(customer)) {
+            throw new ActionIsImpossibleException("Seller and customer can't be one person");
+        }
         if (ad.getStatus() == AdvertisementStatus.ACTIVE) {
             ad.setStatus(AdvertisementStatus.COMPLETED);
             Sale sale = new Sale(ad, customer);

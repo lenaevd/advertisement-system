@@ -1,6 +1,6 @@
 package com.lenaevd.advertisements.mapper;
 
-import com.lenaevd.advertisements.dto.MessageDto;
+import com.lenaevd.advertisements.dto.message.MessageDto;
 import com.lenaevd.advertisements.model.Message;
 import org.mapstruct.Mapper;
 

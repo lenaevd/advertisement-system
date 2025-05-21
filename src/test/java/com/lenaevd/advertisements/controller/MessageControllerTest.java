@@ -1,8 +1,8 @@
 package com.lenaevd.advertisements.controller;
 
-import com.lenaevd.advertisements.dto.MessageDto;
-import com.lenaevd.advertisements.dto.SendFirstMessageRequest;
-import com.lenaevd.advertisements.dto.SendMessageRequest;
+import com.lenaevd.advertisements.dto.message.MessageDto;
+import com.lenaevd.advertisements.dto.message.SendFirstMessageRequest;
+import com.lenaevd.advertisements.dto.message.SendMessageRequest;
 import com.lenaevd.advertisements.mapper.MessageMapper;
 import com.lenaevd.advertisements.model.Message;
 import com.lenaevd.advertisements.service.MessageService;

@@ -1,7 +1,7 @@
 package com.lenaevd.advertisements.controller;
 
 import com.lenaevd.advertisements.dto.ChatDto;
-import com.lenaevd.advertisements.dto.MessageDto;
+import com.lenaevd.advertisements.dto.message.MessageDto;
 import com.lenaevd.advertisements.mapper.ChatMapper;
 import com.lenaevd.advertisements.model.Chat;
 import com.lenaevd.advertisements.service.ChatService;

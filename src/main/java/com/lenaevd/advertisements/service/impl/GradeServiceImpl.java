@@ -98,6 +98,14 @@ public class GradeServiceImpl implements GradeService {
 
     @Override
     @Transactional(readOnly = true)
+    public float getUsersRating(Integer userId) {
+        LOGGER.debug(LoggerMessages.EXECUTING_FOR_OBJECT, "getUsersRating", EntityName.USER, userId);
+        User user = userService.getUserById(userId);
+        return user.getRating();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<Grade> getAllGrades() {
         LOGGER.debug(LoggerMessages.ALL_OBJECTS_REQUESTED);
         return gradeDao.findAll();
